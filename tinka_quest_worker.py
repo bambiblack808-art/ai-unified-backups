@@ -86,7 +86,12 @@ def run_optimization_worker():
     # 1. Execute optimization at target location
     print(f"[*] Running git prune & repack inside {WORKSPACE_DIR}...")
     subprocess.run(["git", "reflog", "expire", "--expire=now", "--all"], cwd=str(WORKSPACE_DIR), check=True)
-    subprocess.run(["git", "gc", "--prune=now", "--aggressive"], cwd=str(WORKSPACE_DIR), check=True)
+    # Check for existing gc process or lockfile
+    gc_pid_file = WORKSPACE_DIR / ".git" / "gc.pid"
+    if gc_pid_file.exists():
+        print("[!] Another git gc process is active. Skipping repack this cycle.")
+    else:
+        subprocess.run(["git", "gc", "--prune=now", "--quiet"], cwd=str(WORKSPACE_DIR), check=True)
 
     # 2. Measure verified post-evidence
     post_metric = get_git_repo_size_mb(WORKSPACE_DIR)
