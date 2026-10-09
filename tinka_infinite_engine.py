@@ -74,6 +74,13 @@ class PrecisionLedger:
             """, (level_index, stress, success_rate, handle))
 
 class AdaptiveEconomicEngine:
+    MACRO_PHASES = [
+        ("Expansion", "High credit availability, low default rates, premium valuations."),
+        ("Late-Cycle Peak", "Rising interest rates, tightening liquidity, margin compression."),
+        ("Recession / Contraction", "Distressed assets, elevated insolvencies, liquidity dry-up."),
+        ("Trough / Restructuring", "Asymmetric bargains, debt restructuring, early recovery.")
+    ]
+
     REAL_WORLD_MODELS = [
         {
             "category": "Cash Flow & Supply Chain",
@@ -84,7 +91,7 @@ class AdaptiveEconomicEngine:
         {
             "category": "Debt & Leverage",
             "concept": "Variable Rate Financing vs. Fixed Cost",
-            "lesson": "Debt accelerates growth during high demand, but a 200 bps rate shock will crush cash flow if EBIT < Interest.",
+            "lesson": "Debt accelerates growth during high demand, but rate shocks crush cash flow if EBIT < Interest.",
             "param": "interest_rate_shock"
         },
         {
@@ -96,30 +103,70 @@ class AdaptiveEconomicEngine:
         {
             "category": "Tax & Depreciation",
             "concept": "Asset Write-offs and Reserve Hedging",
-            "lesson": "Failing to set aside 25% tax and equipment maintenance reserves creates emergency liquidation scenarios.",
+            "lesson": "Failing to set aside 25% tax and maintenance reserves creates emergency liquidation scenarios.",
             "param": "depreciation_reserve_ratio"
+        },
+        {
+            "category": "Distressed Buyouts",
+            "concept": "Counter-Cyclical Liquidity Deployment",
+            "lesson": "Deploying cash when competitors are illiquid secures assets at steep discounts with asymmetric upside.",
+            "param": "distressed_arbitrage_multiplier"
         }
     ]
 
     @staticmethod
     def generate_scenario(level: int, balance_cents: int, stress: float) -> dict:
+        # Macro cycle period = 16 epochs
+        cycle_period = 16
+        cycle_phase_angle = (2.0 * math.pi * (level % cycle_period)) / cycle_period
+        macro_wave = math.sin(cycle_phase_angle)  # Ranges from -1.0 (deep trough) to +1.0 (peak expansion)
+
+        # Classify current macro phase
+        if macro_wave >= 0.5:
+            phase_name, phase_desc = AdaptiveEconomicEngine.MACRO_PHASES[0]
+        elif 0.0 <= macro_wave < 0.5:
+            phase_name, phase_desc = AdaptiveEconomicEngine.MACRO_PHASES[1]
+        elif -0.5 <= macro_wave < 0.0:
+            phase_name, phase_desc = AdaptiveEconomicEngine.MACRO_PHASES[2]
+        else:
+            phase_name, phase_desc = AdaptiveEconomicEngine.MACRO_PHASES[3]
+
         model = random.choice(AdaptiveEconomicEngine.REAL_WORLD_MODELS)
-        capital_base_cents = max(5000, int(balance_cents * 0.25))
-        risk_multiplier = 1.0 + (0.15 * math.log(max(1, level))) * stress
-        cost_cents = int(capital_base_cents * 0.40 * risk_multiplier)
-        upside_cents = int(cost_cents * (1.25 + (random.random() * 0.50)))
-        downside_cents = int(cost_cents * (0.75 + (random.random() * 0.40)))
+        
+        # Scaling variables: capital required scales dynamically with current balance
+        capital_base_cents = max(4000, int(balance_cents * 0.22))
+        
+        # Base win probability driven by macroeconomic wave rather than linear decay
+        # Oscillates between ~40% (recession) and ~75% (expansion)
+        base_win_prob = 0.55 + (0.16 * macro_wave) - (0.05 * (stress - 1.0))
+        win_prob = max(0.32, min(0.85, base_win_prob + (random.uniform(-0.04, 0.04))))
+
+        # Counter-cyclical asymmetry:
+        # In a recession/trough (macro_wave < 0), capital is scarcer, but return upside is far higher (1.6x - 2.2x)
+        if macro_wave < 0:
+            cost_cents = int(capital_base_cents * (0.80 + 0.15 * stress))
+            upside_mult = 1.60 + (abs(macro_wave) * 0.60) + (random.random() * 0.20)
+            downside_mult = 0.85 + (random.random() * 0.25)
+        else: # Expansion: steady reliable margins
+            cost_cents = int(capital_base_cents * (1.00 + 0.10 * stress))
+            upside_mult = 1.25 + (macro_wave * 0.25) + (random.random() * 0.15)
+            downside_mult = 0.70 + (random.random() * 0.20)
+
+        upside_cents = int(cost_cents * upside_mult)
+        downside_cents = int(cost_cents * downside_mult)
 
         return {
             "level": level,
+            "macro_phase": phase_name,
+            "macro_wave": round(macro_wave, 2),
             "category": model["category"],
-            "title": f"Epoch {level}: {model['concept']}",
-            "lesson": model["lesson"],
+            "title": f"Epoch {level} [{phase_name}]: {model['concept']}",
+            "lesson": f"{model['lesson']} [Macro: {phase_desc}]",
             "capital_required_cents": cost_cents,
             "success_reward_cents": upside_cents,
             "failure_penalty_cents": downside_cents,
             "stress_factor": round(stress, 3),
-            "win_probability": max(0.20, min(0.85, 0.70 - (0.02 * level * stress) + (random.random() * 0.10)))
+            "win_probability": win_prob
         }
 
 class TinkaGameDirector:
