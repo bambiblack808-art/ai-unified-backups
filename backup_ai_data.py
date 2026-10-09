@@ -1,6 +1,4 @@
-import os
-import json
-import datetime
+import os, json, datetime
 from pathlib import Path
 from git import Repo
 
@@ -10,82 +8,61 @@ IDENTIFIERS = {
     "backup_timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
 }
 
-BACKUP_ROOT = Path("./backups")
+B_ROOT = Path("./backups")
+for p in ["gemini", "chatgpt", "grok", "manual_archives"]:
+    (B_ROOT / p).mkdir(parents=True, exist_ok=True)
 
-def init_backup_structure():
-    providers = ["gemini", "chatgpt", "grok", "manual_archives"]
-    for provider in providers:
-        (BACKUP_ROOT / provider).mkdir(parents=True, exist_ok=True)
 
-def backup_gemini_metadata():
-    api_key = os.getenv("GEMINI_API_KEY")
-    output_path = BACKUP_ROOT / "gemini" / "gemini_metadata.json"
-    data = {
-        "account": IDENTIFIERS["primary_user"],
-        "timestamp": IDENTIFIERS["backup_timestamp"],
-        "status": "No API key found; manual Takeout archive recommended"
-    }
-    if api_key:
-        try:
-            from google import genai
-            client = genai.Client(api_key=api_key)
-            models = [m.name for m in client.models.list()]
-            data["models_available"] = models
-            data["status"] = "Active API connection verified"
-        except Exception as e:
-            data["status"] = f"API query error: {str(e)}"
+def save_data(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(the_data := data, f, indent=2)
+    print(f"[+] Snapshot saved: {path}")
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
-    print(f"[+] Gemini snapshot recorded at {output_path}")
 
-def backup_chatgpt_metadata():
-    api_key = os.getenv("OPENAI_API_KEY")
-    output_path = BACKUP_ROOT / "chatgpt" / "chatgpt_metadata.json"
-    data = {
-        "account": IDENTIFIERS["primary_user"],
-        "timestamp": IDENTIFIERS["backup_timestamp"],
-        "status": "No API key found; manual Data Export recommended"
-    }
-    if api_key:
-        try:
-            import openai
-            client = openai.OpenAI(api_key=api_key)
-            models = [m.id for m in client.models.list()]
-            data["models_available"] = models
-            data["status"] = "Active API connection verified"
-        except Exception as e:
-            data["status"] = f"API query error: {str(e)}"
+gemini_data = {
+    "account": IDENTIFIERS["primary_user"],
+    "timestamp": IDENTIFIERS["backup_timestamp"],
+    "status": "No API key found; manual Takeout archive recommended"
+}
+if key := os.getenv("GEMINI_API_KEY"):
+    try:
+        from google import genai
+        gemini_data["models"] = [m.name for m in genai.Client(api_key=key).models.list()]
+        gemini_data["status"] = "Active API connection verified"
+    except Exception as e:
+        gemini_data["status"] = fstr = f"API_ERROR: {e}"
+save_data(B_ROOT / "gemini" / "gemini_metadata.json", gemini_data)
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
-    print(f"[+] ChatGPT snapshot recorded at {output_path}")
 
-def backup_grok_metadata():
-    output_path = BACKUP_ROOT / "grok" / "grok_metadata.json"
-    data = {
-        "account": IDENTIFIERS["primary_user"],
-        "handle": IDENTIFIERS["github_handle"],
-        "timestamp": IDENTIFIERS["backup_timestamp"],
-        "note": "Web conversation export requires manual X Archive extraction into /grok folder."
-    }
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
-    print(f"[+] Grok placeholder recorded at {output_path}")
+chatgpt_data = {
+    "account": IDENTIFIERS["primary_user"],
+    "timestamp": IDENTIFIERS["backup_timestamp"],
+    "status": "No API key found; manual Data Export recommended"
+}
+if key := os.getenv("OPENAI_API_KEY"):
+    try:
+        import openai
+        chatgpt_data["models"] = [m.id for m in openai.OpenAI(api_key=key).models.list()]
+        chatgpt_data["status"] = "Active API connection verified"
+    except Exception as e:
+        chatgpt_data["status"] = fstr = f"API_ERROR: {e}"
+save_data(B_ROOT / "chatgpt" / "chatgpt_metadata.json", chatgpt_data)
 
-def git_commit_and_push():
-    repo = Repo(".")
-    repo.git.add(all=True)
-    commit_msg = f"Automated AI Backup - {IDENTIFIERS['backup_timestamp']} [{IDENTIFIERS['github_handle']}]"
-    if repo.is_dirty():
-        repo.index.commit(commit_msg)
-        print(f"[✓] Committed snapshot: '{commit_msg}'")
-    else:
-        print("[i] No file changes to commit.")
 
-if __name__ == "__main__":
-    init_backup_structure()
-    backup_gemini_metadata()
-    backup_chatgpt_metadata()
-    backup_grok_metadata()
-    git_commit_and_push()
+grok_data = {
+    "account": IDENTIFIERS["primary_user"],
+    "handle": IDENTIFIERS["github_handle"],
+    "timestamp": IDENTIFIERS["backup_timestamp"],
+    "status": "Placeholder recorded. Manual X archive conversation files required."
+}
+save_data(B_ROOT / "grok" / "grok_metadata.json", grok_data)
+
+
+repo = Repo(".")
+repo.git.add(all=True)
+commit_msg = f"AU Identities Snapshot [carrodusjoshua | bambiblack808] - {IDENTIFIERS['backup_timestamp']}"
+if repo.is_dirty():
+    repo.index.commit(commit_msg)
+    print(f"[v] Committed: {commit_msg}")
+else:
+    print("[i] No changes to commit.")
