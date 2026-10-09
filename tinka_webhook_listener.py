@@ -49,9 +49,9 @@ def process_inflow_deposit(source_rail: str, clearing_ref: str, amount_cents: in
             # 1. Idempotency Check & Inflow Logging
             cur.execute("""
                 INSERT INTO external_deposits (
-                    deposit_id, source_rail, clearing_ref, amount_cents, created_at, payload_hash
-                ) VALUES (?, ?, ?, ?, ?, ?);
-            """, (deposit_id, source_rail, clearing_ref, amount_cents, now, payload_hash))
+                    deposit_id, source_rail, clearing_ref, amount_cents, created_at, payload_hash, raw_payload
+                ) VALUES (?, ?, ?, ?, ?, ?, ?);
+            """, (deposit_id, source_rail, clearing_ref, amount_cents, now, payload_hash, raw_payload))
 
             # 2. Credit ESCROW_RESERVE
             cur.execute("""
