@@ -1,12 +1,12 @@
 {
   "player": {
     "handle": "bambiblack808-art",
-    "balance_cents": 7863,
-    "level_index": 10,
-    "adaptive_stress": 1.2700000000000002,
-    "success_rate": 0.8338007040000002
+    "balance_cents": 8035,
+    "level_index": 11,
+    "adaptive_stress": 1.3200000000000003,
+    "success_rate": 0.8670405632000002
   },
-  "balance_display": "$78.63",
-  "updated_at": "2026-10-09T14:34:29.342591+00:00",
-  "audit_hash": "82757ebd23ef3083a7c1db4e57995620abbbc487d8b43ab1cb574159c606d76d"
+  "balance_display": "$80.35",
+  "updated_at": "2026-10-09T14:34:31.522810+00:00",
+  "audit_hash": "96994f052493f60545dd579f35db622d7080798df608fc9a790399b6a8a07cf4"
 }
