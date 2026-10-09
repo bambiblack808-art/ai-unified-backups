@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-10-09T14:10:32.990638+00:00",
+  "target_user": "carrodusjoshua",
+  "target_github": "bambiblack808-art",
+  "target_gcp_project": "venture-engine-1411e",
+  "target_region": "australia-southeast1",
+  "locale": "Bentleigh East, Victoria, Australia",
+  "hostname": "cs-537956910949-default",
+  "egress_public_ip": "35.186.154.101",
+  "active_sessions": [],
+  "established_sockets": [
+    "tcp   ESTAB 0      0               127.0.0.1:53712              127.0.0.1:22                                   ",
+    "tcp   ESTAB 0      0               127.0.0.1:22                 127.0.0.1:40374                                ",
+    "tcp   ESTAB 0      0               127.0.0.1:971                127.0.0.1:52518                                ",
+    "tcp   ESTAB 0      0               127.0.0.1:971                127.0.0.1:52514                                ",
+    "tcp   ESTAB 0      0               127.0.0.1:54164              127.0.0.1:970                                  ",
+    "tcp   ESTAB 0      0               127.0.0.1:40374              127.0.0.1:22                                   ",
+    "tcp   ESTAB 0      0               10.88.0.3:36412          20.190.163.18:443   users:((\"code\",pid=2396,fd=15))",
+    "tcp   ESTAB 0      0               127.0.0.1:22                 127.0.0.1:53712                                ",
+    "tcp   ESTAB 0      0               127.0.0.1:52514              127.0.0.1:971                                  ",
+    "tcp   ESTAB 0      0               127.0.0.1:52518              127.0.0.1:971                                  ",
+    "tcp   ESTAB 0      0               127.0.0.1:54166              127.0.0.1:970                                  ",
+    "tcp   ESTAB 0      0      [::ffff:10.88.0.3]:980   [::ffff:10.134.196.10]:56610                                ",
+    "tcp   ESTAB 0      0      [::ffff:10.88.0.3]:980    [::ffff:10.134.198.5]:47716                                ",
+    "tcp   ESTAB 0      0      [::ffff:10.88.0.3]:980   [::ffff:10.134.196.10]:46634                                ",
+    "tcp   ESTAB 0      0      [::ffff:10.88.0.3]:980    [::ffff:10.134.198.5]:47722                                ",
+    "tcp   ESTAB 0      0      [::ffff:127.0.0.1]:970       [::ffff:127.0.0.1]:54164                                ",
+    "tcp   ESTAB 0      0      [::ffff:10.88.0.3]:980    [::ffff:10.134.198.5]:43748                                ",
+    "tcp   ESTAB 0      0      [::ffff:10.88.0.3]:980   [::ffff:10.134.196.10]:56602                                ",
+    "tcp   ESTAB 0      0      [::ffff:127.0.0.1]:970       [::ffff:127.0.0.1]:54166"
+  ],
+  "git_status": "origin\thttps://github.com/bambiblack808-art/ai-unified-backups.git (fetch)\norigin\thttps://github.com/bambiblack808-art/ai-unified-backups.git (push)"
+}

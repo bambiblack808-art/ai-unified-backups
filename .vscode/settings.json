@@ -1,0 +1,22 @@
+{
+  "cloudcode.project": "venture-engine-1411e",
+  "cloudcode.cloudRun.region": "australia-southeast1",
+  "security.workspace.trust.enabled": true,
+  "security.workspace.trust.untrustedFiles": "newWindow",
+  "telemetry.telemetryLevel": "off",
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "/bin/bash",
+      "args": [
+        "-l"
+      ],
+      "icon": "terminal-bash"
+    }
+  },
+  "python.defaultInterpreterPath": "/home/bambiblack808/workspace/ai-unified-backups/.venv/bin/python",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true
+}

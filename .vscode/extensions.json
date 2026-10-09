@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "googlecloudtools.cloudcode",
+    "ms-python.python",
+    "github.vscode-github-actions",
+    "redhat.vscode-yaml"
+  ]
+}
