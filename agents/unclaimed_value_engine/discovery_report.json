@@ -1,0 +1,109 @@
+{
+  "engine": "TINKA_UNCLAIMED_VALUE_ENGINE",
+  "version": "1.0.0",
+  "timestamp_utc": "2026-10-09T19:14:25.945016+00:00",
+  "mode": "READ_ONLY_LOCAL_DISCOVERY",
+  "files_scanned": 330,
+  "read_errors": 0,
+  "files_containing_address_candidates": 4,
+  "address_occurrences": 8,
+  "unique_address_candidates": 4,
+  "reward_filename_leads": [
+    {
+      "file": "phase4_legacy_recovery_20260916T182635Z.txt",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    },
+    {
+      "file": "ENTRYPOINT_RECOVERY.txt",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    },
+    {
+      "file": "year_guardian/recovery_manifest.py",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    },
+    {
+      "file": "management/UNCLAIMED_MONEY_ACTION_PLAN.txt",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    },
+    {
+      "file": "management/MONEY_RECOVERY_SEARCH.json",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    },
+    {
+      "file": "recovery/drive_recovery_report.txt",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    },
+    {
+      "file": "recovery/recovery_scan.txt",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    },
+    {
+      "file": "year_guardian/reports/recovery_manifest.json",
+      "status": "UNVERIFIED_RESEARCH_LEAD"
+    }
+  ],
+  "candidates": [
+    {
+      "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "type": "BITCOIN_BECH32",
+      "source_files": [
+        "emergent_gap/market_latest.json",
+        "recovery/public_crypto_evidence.txt",
+        "wallets.json"
+      ],
+      "occurrences": 3,
+      "ownership": "UNVERIFIED",
+      "claim_eligibility": "UNVERIFIED",
+      "recommended_action": "INVESTIGATE_PROVENANCE"
+    },
+    {
+      "address": "0x00000000219ab540356cBB839Cbe05303d7705Fa",
+      "type": "EVM_ADDRESS",
+      "source_files": [
+        "emergent_gap/market_latest.json",
+        "recovery/public_crypto_evidence.txt",
+        "wallets.json"
+      ],
+      "occurrences": 3,
+      "ownership": "UNVERIFIED",
+      "claim_eligibility": "UNVERIFIED",
+      "recommended_action": "INVESTIGATE_PROVENANCE"
+    },
+    {
+      "address": "0x281055afc982d96fab65b3a49cac8b878184cb16",
+      "type": "EVM_ADDRESS",
+      "source_files": [
+        "rays/eth_watcher.py"
+      ],
+      "occurrences": 1,
+      "ownership": "UNVERIFIED",
+      "claim_eligibility": "UNVERIFIED",
+      "recommended_action": "INVESTIGATE_PROVENANCE"
+    },
+    {
+      "address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+      "type": "EVM_ADDRESS",
+      "source_files": [
+        "rays/eth_watcher.py"
+      ],
+      "occurrences": 1,
+      "ownership": "UNVERIFIED",
+      "claim_eligibility": "UNVERIFIED",
+      "recommended_action": "INVESTIGATE_PROVENANCE"
+    }
+  ],
+  "safety": {
+    "wallets_connected": false,
+    "transactions_sent": false,
+    "signatures_requested": false,
+    "existing_ledger_modified": false,
+    "ownership_inferred_from_address": false
+  },
+  "limitations": [
+    "Address format detection is not proof of address validity.",
+    "A public address does not establish ownership.",
+    "This version does not query live blockchain balances.",
+    "Reward filename matches are leads, not confirmed entitlements.",
+    "No funds have been claimed or moved."
+  ]
+}
